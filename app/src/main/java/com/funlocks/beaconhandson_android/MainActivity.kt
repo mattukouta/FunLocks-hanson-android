@@ -70,24 +70,29 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
     }
 
     override fun onBeaconServiceConnect() {
+        /**
+         * ビーコンの範囲内への入退場時の処理
+         */
         beaconManager.addMonitorNotifier(object : MonitorNotifier {
-
             /**
              * ビーコンの範囲内に入った時の処理
              */
             override fun didEnterRegion(region: Region?) {
-                Log.d("iBeacon", "Enter Region:${region}")
+                Log.d("iBeacon:Enter", "Enter Region:${region}")
             }
 
             /**
              * ビーコンの範囲内から出た時の処理
              */
             override fun didExitRegion(region: Region?) {
-                Log.d("iBeacon", "Exit Region")
+                Log.d("iBeacon:Exit", "Exit Region")
             }
 
+            /**
+             * ビーコンの範囲内への入退場の変化時の処理
+             */
             override fun didDetermineStateForRegion(state: Int, region: Region?) {
-                Log.d("iBeacon", "Determine State$state, Region$region")
+                Log.d("iBeacon:Determine", "Determine State$state, Region$region")
             }
         })
 
@@ -113,6 +118,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
 
     /**
      * Permissionを許可した際の処理
+     * ビーコンのスキャンを開始
      */
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     fun startScan() {
@@ -128,6 +134,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
         }
     }
 
+    /**
+     * ビーコンのスキャンを停止
+     */
     private fun stopScan() {
         try {
             /**
