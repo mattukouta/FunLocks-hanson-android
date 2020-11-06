@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -43,6 +44,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
 
         stop.setOnClickListener {
             stopScan()
+        }
+
+        reset.setOnClickListener {
+            beacon_list.removeAllViews()
         }
     }
 
@@ -86,8 +91,23 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
             }
         })
 
-        beaconManager.addRangeNotifier { beacon, region ->
-            Log.d("iBeacon", "range:${beacon}")
+        /**
+         * ビーコンの範囲内にいるときに継続的に行われる処理
+         */
+        beaconManager.addRangeNotifier { beacons, region ->
+            for(beacon in beacons) {
+                val textView = TextView(this)
+                textView.text =
+                    "UUID:${beacon.id1}\n" +
+                            "MajorId:${beacon.id2}\n" +
+                            "MinorId:${beacon.id3}\n" +
+                            "RSSI:${beacon.rssi}\n" +
+                            "TxPower:${beacon.txPower}\n" +
+                            "Distance:${beacon.distance}\n"
+
+                beacon_list.addView(textView)
+            }
+            Log.d("iBeacon:range", "range:${beacons}")
         }
     }
 
