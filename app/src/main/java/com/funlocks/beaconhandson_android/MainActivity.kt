@@ -51,15 +51,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        /**
-         * altbeacon開始
-         */
-        beaconManager.bind(this)
-    }
-
     override fun onPause() {
         super.onPause()
 
@@ -122,6 +113,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
      */
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
     fun startScan() {
+
+        /**
+         * altbeaconが開始されているかどうか
+         * `beaconManager.isBound(this)`がtrue(開始されている)なら何もしない
+         * `beaconManager.isBound(this)`がfalse(開始されていない)なら開始する
+         */
+        if (!beaconManager.isBound(this)) {
+            /**
+             * altbeacon開始
+             */
+            beaconManager.bind(this)
+        }
+
         try {
             /**
              * Beacon情報の監視を開始
