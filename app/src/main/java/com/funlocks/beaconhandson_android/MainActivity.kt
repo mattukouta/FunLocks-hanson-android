@@ -74,14 +74,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
              * ビーコンの範囲内に入った時の処理
              */
             override fun didEnterRegion(region: Region?) {
-                Log.d("iBeacon:Enter", "Enter Region:${region}")
+                Toast.makeText(applicationContext, "Enter Region", Toast.LENGTH_SHORT).show()
             }
 
             /**
              * ビーコンの範囲内から出た時の処理
              */
             override fun didExitRegion(region: Region?) {
-                Log.d("iBeacon:Exit", "Exit Region")
+                Toast.makeText(applicationContext, "Exit Region", Toast.LENGTH_SHORT).show()
             }
 
             /**
