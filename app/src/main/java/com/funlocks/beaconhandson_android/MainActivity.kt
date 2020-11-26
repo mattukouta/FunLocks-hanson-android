@@ -1,6 +1,7 @@
 package com.funlocks.beaconhandson_android
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
@@ -10,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.*
 import permissions.dispatcher.*
+import java.sql.Date
+import java.text.SimpleDateFormat
+import kotlin.math.floor
 
 @RuntimePermissions
 class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
         beaconManager.unbind(this)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBeaconServiceConnect() {
         /**
          * ビーコンの範囲内への入退場時の処理
@@ -94,12 +99,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
             for(beacon in beacons) {
                 val textView = TextView(this)
                 textView.text =
-                    "UUID:${beacon.id1}\n" +
-                            "MajorId:${beacon.id2}\n" +
-                            "MinorId:${beacon.id3}\n" +
-                            "RSSI:${beacon.rssi}\n" +
-                            "TxPower:${beacon.txPower}\n" +
-                            "Distance:${beacon.distance}\n"
+                    "UUID（固有ID）: ${beacon.id1}\n" +
+                        "Major（メジャー値）: ${beacon.id2}\n" +
+                        "Minor（マイナー値）: ${beacon.id3}\n" +
+                        "RSSI（電波強度）: ${beacon.rssi}\n" +
+                        "Accuracy（距離）: ${floor(beacon.distance * 100) /100}m\n" +
+                        "TimeStamp（最終観測時刻）: ${convertTimeStamp(beacon.lastCycleDetectionTimestamp)}\n"
 
                 beacon_list.addView(textView)
             }
@@ -173,5 +178,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         this.onRequestPermissionsResult(requestCode, grantResults)
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun convertTimeStamp(lastTimeStamp: Long): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd kk:mm:ss")
+        val date = Date(lastTimeStamp)
+        return simpleDateFormat.format(date)
     }
 }
