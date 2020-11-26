@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
      * Permissionを許可した際の処理
      * ビーコンのスキャンを開始
      */
-    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun startScan() {
 
         /**
