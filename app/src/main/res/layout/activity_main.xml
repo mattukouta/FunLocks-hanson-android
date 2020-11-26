@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
+            android:onClick="onClickStart"
             android:text="start" />
 
         <Button
@@ -30,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
+            android:onClick="onClickStop"
             android:text="stop" />
 
         <Button
@@ -38,6 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
+            android:onClick="onClickReset"
             android:text="reset" />
     </LinearLayout>
 

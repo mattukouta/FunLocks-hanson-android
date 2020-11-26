@@ -5,10 +5,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.RemoteException
 import android.util.Log
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 import org.altbeacon.beacon.*
 import permissions.dispatcher.*
 import java.sql.Date
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
     private val UUID: String? = null
     private val MAJOR_ID: String? = null
     private val MINOR_ID: String? = null
+    private lateinit var beacon_list: LinearLayout
 
     /**
      * 受信するビーコンの設定
@@ -38,21 +40,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        beacon_list = findViewById(R.id.beacon_list)
+
         beaconManager = BeaconManager.getInstanceForApplication(this)
         beaconManager.isRegionStatePersistenceEnabled = false
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
-
-        start.setOnClickListener {
-            startScanWithPermissionCheck()
-        }
-
-        stop.setOnClickListener {
-            stopScan()
-        }
-
-        reset.setOnClickListener {
-            beacon_list.removeAllViews()
-        }
     }
 
     override fun onPause() {
@@ -62,6 +54,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
          * altbeacon終了
          */
         beaconManager.unbind(this)
+    }
+
+    fun onClickStart(view: View) {
+        startScanWithPermissionCheck()
+    }
+
+    fun onClickStop(view: View) {
+        stopScan()
+    }
+
+    fun onClickReset(view: View) {
+        beacon_list.removeAllViews()
     }
 
     @SuppressLint("SetTextI18n")
@@ -118,7 +122,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
      */
     @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
     fun startScan() {
-
         /**
          * altbeaconが開始されているかどうか
          * `beaconManager.isBound(this)`がtrue(開始されている)なら何もしない
