@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
 
     private val UNIQUE_ID: String? = "iBeacon"
     private val UUID: String? = null
-    private val MAJOR_ID: String? = null
-    private val MINOR_ID: String? = null
+    private val MAJOR: String? = null
+    private val MINOR: String? = null
     private lateinit var beacon_list: LinearLayout
 
     /**
@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
     private val region = Region(
         UNIQUE_ID,
         UUID?.let { Identifier.parse(it) },
-        MAJOR_ID?.let { Identifier.parse(it) },
-        MINOR_ID?.let { Identifier.parse(it) })
+        MAJOR?.let { Identifier.parse(it) },
+        MINOR?.let { Identifier.parse(it) })
 
     private val IBEACON_FORMAT = "m:2-3=0215,i:4-19,i:20-21,i:22-23,p:24-24"
     private lateinit var beaconManager: BeaconManager
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
         /**
          * ビーコンの範囲内にいるときに継続的に行われる処理
          */
-        beaconManager.addRangeNotifier { beacons, region ->
+        beaconManager.addRangeNotifier { beacons, _ ->
             for(beacon in beacons) {
                 val textView = TextView(this)
                 textView.text =
@@ -112,7 +112,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
 
                 beacon_list.addView(textView)
             }
-            Log.d("iBeacon:range", "range:${beacons}")
         }
     }
 
@@ -134,16 +133,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
             beaconManager.bind(this)
         }
 
-        try {
-            /**
-             * Beacon情報の監視を開始
-             */
-            beaconManager.startMonitoringBeaconsInRegion(region)
+        /**
+         * Beacon情報の監視を開始
+         */
+        beaconManager.startMonitoringBeaconsInRegion(region)
 
-            beaconManager.startRangingBeaconsInRegion(region)
-        } catch (e: RemoteException) {
-            e.printStackTrace()
-        }
+        beaconManager.startRangingBeaconsInRegion(region)
     }
 
     /**
@@ -165,7 +160,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
     /**
      * Permissionを許可しなかった際の処理
      */
-    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    @OnPermissionDenied(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onDefineFineLocation() {
         Toast.makeText(this, "位置情報が許可されていません", Toast.LENGTH_SHORT).show()
     }
@@ -173,7 +168,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
     /**
      * Permissionを今後表示しない際の処理
      */
-    @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+    @OnNeverAskAgain(Manifest.permission.ACCESS_FINE_LOCATION)
     fun onFineLocationNeverAskAgain() {
         Toast.makeText(this, "位置情報が許可されていません、設定から許可してください。", Toast.LENGTH_SHORT).show()
     }
