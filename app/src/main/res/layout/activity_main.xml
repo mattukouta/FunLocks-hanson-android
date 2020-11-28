@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/button_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -17,27 +17,30 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <Button
-            android:id="@+id/start"
+            android:id="@+id/start_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
+            android:onClick="onClickStart"
             android:text="start" />
 
         <Button
-            android:id="@+id/stop"
+            android:id="@+id/stop_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
+            android:onClick="onClickStop"
             android:text="stop" />
 
         <Button
-            android:id="@+id/reset"
+            android:id="@+id/reset_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_weight="1"
+            android:onClick="onClickReset"
             android:text="reset" />
     </LinearLayout>
 
@@ -49,7 +52,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/button_list">
 
         <LinearLayout
             android:id="@+id/beacon_list"
