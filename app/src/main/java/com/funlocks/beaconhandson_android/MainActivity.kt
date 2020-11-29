@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), BeaconConsumer {
         beaconManager.beaconParsers.add(BeaconParser().setBeaconLayout(IBEACON_FORMAT))
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
 
         /**
          * altbeacon終了
